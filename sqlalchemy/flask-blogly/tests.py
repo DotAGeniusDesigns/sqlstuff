@@ -47,6 +47,14 @@ class UserTestCase(unittest.TestCase):
         self.assertIn(b'New Post', response.data)
         self.assertIn(b'Content of the new post', response.data)
 
+    def test_tag_creation(self):
+        """Test creating a new tag."""
+        with self.client as c:
+            resp = c.post('/tags/new', data={'name': 'funny'}, follow_redirects=True)
+            self.assertEqual(resp.status_code, 200)
+            tag = Tag.query.one()
+            self.assertEqual(tag.name, 'funny')
+
 
 if __name__ == '__main__':
     unittest.main()
