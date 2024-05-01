@@ -39,5 +39,14 @@ class UserTestCase(unittest.TestCase):
         response = self.client.get(f'/users/{user.id}')
         self.assertIn('Test User', response.data)
 
+    def test_add_post(self):
+        """Test adding a new post to a user."""
+        user = User.query.first()  # Assuming you have a user already in test setup
+
+        response = self.client.post(f'/users/{user.id}/posts/new', data={'title': 'New Post', 'content': 'Content of the new post'}, follow_redirects=True)
+        self.assertIn(b'New Post', response.data)
+        self.assertIn(b'Content of the new post', response.data)
+
+
 if __name__ == '__main__':
     unittest.main()
